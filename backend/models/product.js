@@ -63,6 +63,13 @@ const productSchema = new mongoose.Schema({
     },
     reviews: [
         {
+            user: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'User',
+                required: true
+        
+            },
+            
             name: {
                 type: String,
                 required: true
@@ -78,6 +85,16 @@ const productSchema = new mongoose.Schema({
 
         }
     ],
+    celebid: {
+        type: Number,
+        default: 0
+    },
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+
+    },
     CreatedAt: {
         type: Date,
         default: Date.now

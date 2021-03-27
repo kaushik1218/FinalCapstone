@@ -1,43 +1,54 @@
 const Home = require('../models/home')
+const Product = require('../models/product');
+const errorHandler=require('../utils/errorHandler');
+const catchAsyncErrors = require('../middlewares/catchAsyncErrors');
+const APIFeatures = require('../utils/apiFeatures');
 
 // Create new Celebrity => /api/v1/admin/celebrity/new
-exports.newCelebrity = async(req, res, next) => {
+exports.newCelebrity = catchAsyncErrors (async(req, res, next) => {
+    req.body.user = req.user.id;
     const home = await Home.create(req.body);
 
     res.status(201).json({
         success: true,
         home
     })
-}
+})
 
-// Get all Celebrities => /api/v1/celebrity
+// Get all Celebrities => /api/v1/celebrity?keyword=kohli
 
-exports.getCelebrity = async (req, res, next) => {
-    const home = await Home.find();
-    res.status(200).json({
-        success: true,
-        count: home.length,
-        home
-    })
-}
+exports.getCelebrity = catchAsyncErrors ( async (req, res, next) => {
+    
+    
+    const celebrityCount = await Home.countDocuments();
+    const apiFeatures = new APIFeatures(Home.find(), req.query)
+                           .search()
+                           .filter()
+    const home = await apiFeatures.query;
 
-// Get Single Celebrity details => /api/v1/celebrity/:id
+        res.status(200).json({
+            success: true,
+            celebrityCount,
+            home
+        })
+  
 
-exports.getSingleCelebrity = async (req, res, next) => {
+})
+
+// Get Single Celebrity details => /api/v1/celebrity?keyword=kohli
+
+exports.getSingleCelebrity = catchAsyncErrors ( async (req, res, next) => {
     const home = await Home.findById(req.params.id);
 
-    if(!home) {
-        return res.status(404).json({
-            success: false,
-            message: 'Celebrity not found'
-        })
+    const pro = await Product.find({celebid:req.params.celebid})
+    if(!pro) {
+        return next(new errorHandler('Celebrity not found',404));
     }
-
     res.status(200).json({
         success: true,
-        home
+        pro
     })
-}
+})
 
 //update Celebrity => /api/v1/admin/celebrity/:id
 exports.updateCelebrity = async (req, res, next) => {

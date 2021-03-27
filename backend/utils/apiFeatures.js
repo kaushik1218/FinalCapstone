@@ -5,7 +5,7 @@ class APIFeatures {
     }
 
     search(){
-        const keywords = this.queryStr.keyword ? {
+        const keyword = this.queryStr.keyword ? {
             name: {
                 $regex: this.queryStr.keyword,
                 $options: 'i'
@@ -16,7 +16,7 @@ class APIFeatures {
         this.query = this.query.find({ ...keyword});
         return this;
     }
-
+    
     filter(){
         const queryCopy = { ...this.queryStr };
 
@@ -25,12 +25,12 @@ class APIFeatures {
         //Removing fields from the query string
         const removeFields = ['keyword', 'limit', 'page']
         removeFields.forEach(el => delete queryCopy[el]);
-
+        
         // console.log(queryCopy);
         //Advance filter for price, ratings etc.
         let queryStr = JSON.stringify(queryCopy)
-        queryStr = queryStr.replace(/\b(gt|get|lt|lte)\b/g, match => `$${match}`)
-
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`)
+ 
         this.query = this.query.find(JSON.parse(queryStr));
         return this;
     }

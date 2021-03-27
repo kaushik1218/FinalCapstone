@@ -22,6 +22,10 @@ const homeSchema = new mongoose.Schema({
     AddedOn: {
         type: Date,
         default: Date.now
+    },
+    celebid: {
+        type: Number,
+        default: 0
     }
 })
 
