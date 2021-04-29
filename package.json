@@ -4,7 +4,7 @@
   "description": "full ecommerce site using mern",
   "main": "server.js",
   "engines": {
-    "npm": "12.18.4"
+    "node": "12.18.4"
   },
   
   "scripts": {
