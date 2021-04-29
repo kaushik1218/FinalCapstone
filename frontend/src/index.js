@@ -16,8 +16,8 @@ const options = {
 
 ReactDOM.render(
   <Provider store={store} >
-    <AlertProvider template={AlertTemplate} {...options}> 
-    <App />
+    <AlertProvider template={AlertTemplate} {...options}>
+      <App />
     </AlertProvider>
   </Provider>,
   document.getElementById('root')

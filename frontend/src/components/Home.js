@@ -1,52 +1,58 @@
-import React, { Fragment, useEffect } from 'react'
-import MetaData from './layout/MetaData'
-import Loader from './layout/Loader'
-import { useDispatch, useSelector } from 'react-redux'
-import { getProducts } from '../actions/productActions'
-import Celebrity from './product/Celebrity'
+import React, { Fragment, useState, useEffect } from "react";
+import { Carousel } from 'react-bootstrap'
+import "rc-slider/assets/index.css";
 
-import { useAlert } from 'react-alert';
+import MetaData from "./layout/MetaData";
+import Celebrity from "./celebrity/Celebrity";
+import Loader from "./layout/Loader";
+import axios from "axios";
+import "../App.css";
+import CarouselContainer from '../components/celebrity/CarouselContainer';
 
-const Home = () => {
-    
-    const alert = useAlert();
-    const dispatch = useDispatch();
-    const { loading, home, error, celebrityCount } = useSelector(state => state.home)
+const Home = ({ match }) => {
+  const [celebrities, setCelebrities] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const getCelebrities = async () => {
+    try {
+      const { data } = await axios.get(`/api/v1/celebrities`);
+      console.log(data);
+      setCelebrities(data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(true);
+      console.log("error", error.response);
+    }
+  };
+  useEffect(() => {
+    getCelebrities();
+  }, []);
 
-    useEffect(() => {
 
-        if(error) {
-            
-            return alert.error(error)
-        }
-        dispatch(getProducts());
-         
-        
-    }, [dispatch, alert, error])
 
-    return (
+  return (
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
         <Fragment>
-            {loading ? <Loader/> : (
-            <Fragment>
-                <MetaData title={'Choose your Celeb'} />
-                <h1 id="products_heading">Choose Your Celebrity</h1>
-
-                <section id="products" className="container mt-5">
-                    <div className="row">
-                        {home && home.map(homes => (
-                            <Celebrity key={homes._id} homes={homes} />
-
-
-                        ))}
-
-
-                    </div>
-                </section>
-            </Fragment>
-            )}
-
+          <MetaData title={"Buy Best Products Online"} />
+          <div className="App1">
+      <CarouselContainer />
+    </div>
+          <h1 id='products_heading'>All Celebrities</h1>
+         
+          <section id='products' className='container mt-5'>
+          
+            <div className='row'>
+              {celebrities.map((celebrity) => (
+                <Celebrity key={celebrity._id} celebrity={celebrity} col={3} />
+              ))}
+            </div>
+          </section>
         </Fragment>
-    )
-}
+      )}
+    </Fragment>
+  );
+};
 
-export default Home
+export default Home;

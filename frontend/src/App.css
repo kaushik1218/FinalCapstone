@@ -70,15 +70,15 @@ nav {
 #products_heading {
   margin-top: 1.8rem;
 }
-
+#products_heading{
+  text-align: center;
+}
 .card {
   height: 100%;
-  
 }
 
 .card-title a {
   color: #2e2e2e;
-  padding-left: 50px;
 }
 
 .card-title a:hover {
@@ -88,7 +88,6 @@ nav {
 
 .card-body {
   padding-left: 0;
-  
 }
 
 .card-text {
@@ -101,14 +100,10 @@ nav {
 }
 
 .card-img-top {
-  width: 220px;
-  height: 400px;
+  width: 200px;
+  height: 350px;
 }
 
-.card1-img-top{
-  width: 220px;
-  height: 250px;
-}
 .ratings {
   font-size: 1.2rem;
   color: #fdcc0d;
@@ -122,10 +117,207 @@ nav {
 
 /* Footer */
 footer {
-  margin-top: 8rem;
   color: grey;
   bottom: 0;
   width: 100%;
+}
+.py-1 p{
+  margin-bottom: 0;
+  font-size: 12px;
+}
+.footer {
+  background-color: #232F3E;
+  width: 100%;
+  text-align: left;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 50px;
+  margin-top: 50px;
+}
+
+.footer .footer-left,
+.footer .footer-center,
+.footer .footer-right {
+  display: inline-block;
+  vertical-align: top;
+}
+
+/*.carousel{
+  width: 60%;
+  height: 700px;
+  background-color: black;
+}
+
+.carouselInner{
+  height: 100%;
+  width: 100%;
+}*/
+/* footer left*/
+.App1 {
+  text-align: center;
+}
+.homepage-container{
+  max-width: 100%;
+  padding:0;
+}
+
+.widthheight{
+ width: 100%;
+ height: 500px;
+}
+.footer .footer-left {
+  width: 33%;
+  padding-right: 15px;
+}
+
+.footer .about {
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.footer .about span {
+  display: block;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.footer .icons {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.footer .icons a {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 35px;
+  margin-right: 3px;
+  margin-bottom: 5px;
+}
+
+
+/* footer center*/
+
+/*.footer .footer-center {
+  width: auto;
+}*/
+
+.footer .footer-center i {
+  background-color: #232F3E;
+  color: #ffffff;
+  font-size: 40px;
+  width: 55px;
+  height: 55px;
+  border-radius: 25%;
+  text-align: center;
+  line-height: 55px;
+  margin: 10px 15px;
+  vertical-align: middle;
+}
+.footer .footer-center .fa-facebook:hover{
+  background-color: #4267B2;
+  color: #ffffff;
+}
+.footer .footer-center .fa-twitter:hover{
+  background-color: #1DA1F2;
+  color: #ffffff;
+}
+.footer .footer-center .fa-instagram:hover{
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+  color: #ffffff;
+}
+
+.footer .footer-center i.fa-envelope {
+  font-size: 17px;
+  line-height: 38px;
+}
+
+.footer .footer-center p {
+  display: inline-block;
+  color: #ffffff;
+  vertical-align: middle;
+  margin: 0;
+}
+
+.footer .footer-center p span {
+  display: block;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.footer .footer-center p a {
+  color: #0099ff;
+  text-decoration: none;
+}
+
+
+/* footer right*/
+
+.footer .footer-right {
+  width: 35%;
+}
+
+.footer h2 {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.footer h2 span {
+  color: #0099ff;
+}
+
+.footer .menu {
+  color: #ffffff;
+  margin: 20px 0 12px;
+  padding: 0;
+}
+
+.footer .menu a {
+  display: inline-block;
+  line-height: 1.8;
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer .menu a:hover {
+  color: #0099ff;
+}
+
+.footer .name {
+  color: #0099ff;
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .footer {
+    font-size: 14px;
+  }
+  .footer .footer-left,
+  .footer .footer-center,
+  .footer .footer-right {
+    display: block;
+    width: 100%;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .footer .footer-center i {
+    margin-left: 0;
+  }
 }
 
 /* Ratings */
@@ -194,7 +386,7 @@ footer {
 }
 
 #product_image {
-  margin-top: 9rem;
+  margin-top: 1rem;
 }
 
 /* Loader */
@@ -620,4 +812,7 @@ ul.CTAs a {
 .review_user {
   font-size: 0.8rem;
   color: grey;
+}
+#product_image .w-100{
+  height:500px;
 }

@@ -1,96 +1,153 @@
-const Home = require('../models/home')
-const Product = require('../models/product');
-const errorHandler=require('../utils/errorHandler');
-const catchAsyncErrors = require('../middlewares/catchAsyncErrors');
-const APIFeatures = require('../utils/apiFeatures');
+const Celebrity = require("../models/Celebrity");
+const Product = require("../models/product");
+const ErrorHandler = require("../utils/errorHandler");
+const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
+const cloudinary = require("cloudinary");
+// Create a new celebrity   =>  /api/v1/celebrity/createNewCelebrity
+exports.createNewCelebrity = catchAsyncErrors(async (req, res, next) => {
+  const { name, description, type } = req.body;
+  let images = [];
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
 
-// Create new Celebrity => /api/v1/admin/celebrity/new
-exports.newCelebrity = catchAsyncErrors (async(req, res, next) => {
-    req.body.user = req.user.id;
-    const home = await Home.create(req.body);
+  let imagesLinks = [];
 
-    res.status(201).json({
-        success: true,
-        home
-    })
-})
-
-// Get all Celebrities => /api/v1/celebrity?keyword=kohli
-
-exports.getCelebrity = catchAsyncErrors ( async (req, res, next) => {
-    
-    
-    const celebrityCount = await Home.countDocuments();
-    const apiFeatures = new APIFeatures(Home.find(), req.query)
-                           .search()
-                           .filter()
-    const home = await apiFeatures.query;
-
-        res.status(200).json({
-            success: true,
-            celebrityCount,
-            home
-        })
-  
-
-})
-
-// Get Single Celebrity details => /api/v1/celebrity?keyword=kohli
-
-exports.getSingleCelebrity = catchAsyncErrors ( async (req, res, next) => {
-    const home = await Home.findById(req.params.id);
-
-    const pro = await Product.find({celebid:req.params.celebid})
-    if(!pro) {
-        return next(new errorHandler('Celebrity not found',404));
-    }
-    res.status(200).json({
-        success: true,
-        pro
-    })
-})
-
-//update Celebrity => /api/v1/admin/celebrity/:id
-exports.updateCelebrity = async (req, res, next) => {
-    let home = await Home.findById(req.params.id); 
-
-    if(!home) {
-        return res.status(404).json({
-            success: false,
-            message: 'Celebrity not found'
-        })
-    }
-    
-    home = await Home.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-        userFindAndModify: false
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "products",
     });
 
-    res.status(200).json({
-        success: true,
-        home
-    })
-    
-}
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
 
-// Delete Celebrity => /api/v1/admin/celebrity/:id
+  req.body.images = imagesLinks;
+  const celebrity = await Celebrity.create({
+    name,
+    description,
+    type,
+    images: req.body.images,
+  });
 
-exports.deleteCelebrity = async (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    celebrity,
+  });
+});
 
-    const home = await Home.findById(req.params.id);
+// get All Celebrties   =>  /api/v1/celebrity/getAllCelebrties
+exports.getAllCelebrties = catchAsyncErrors(async (req, res, next) => {
+  const celebrities = await Celebrity.find({});
 
-    if(!home) {
-        return res.status(404).json({
-            success: false,
-            message: 'Celebrity not found'
-        })
-    }
+  res.status(200).json({
+    success: true,
+    data: celebrities,
+  });
+});
 
-    await home.remove();
+// get All Celebrties   =>  /api/v1/celebrity/getCelebrityWiseProducts?id=celebrityId
+exports.getCelebrityWiseProducts = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.query;
+  if (!id) {
+    return next(new ErrorHandler("No Parameter Provided", 400));
+  }
 
-    res.status(200).json({
-        success: true,
-        message: 'Celebrity is deleted.'
-    })
-}
+  const products = await Product.find({ celebrity: id });
+
+  res.status(200).json({
+    success: true,
+    data: products,
+  });
+});
+
+//  Update Celebrity   =>  /api/v1/celebrity/updateCelebrity
+exports.updateCelebrity = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.query;
+  if (!id) {
+    return next(new ErrorHandler("No Parameter Provided", 400));
+  }
+  const celebrity = await Celebrity.findById(id);
+
+  if (!celebrity) {
+    return next(new ErrorHandler("Celebrity not found", 404));
+  }
+
+  let images = [];
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  if (images !== undefined) {
+    // Deleting images associated with the celebrity
+    const deletedImage = await cloudinary.v2.uploader.destroy(
+      celebrity.public_id
+    );
+
+    const result = await cloudinary.v2.uploader.upload(images[0], {
+      folder: "products",
+    });
+    req.body.public_id = result.public_id;
+    req.body.secure_url = result.secure_url;
+  }
+  await celebiry.findByIdAndUpdate(id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  res.status(200).json({
+    success: true,
+    message: "Celebrity Updated Successfully",
+  });
+});
+
+//  Get Single Celebrity   =>  /api/v1/celebrity/singleCelebrity
+exports.singleCelebrity = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.query;
+  if (!id) {
+    return next(new ErrorHandler("No Parameter Provided", 400));
+  }
+  const celebrity = await Celebrity.findById(id);
+
+  if (!celebrity) {
+    return next(new ErrorHandler("Celebrity not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    celebrity,
+  });
+});
+
+//  Delete Celebrity   =>  /api/v1/celebrity/deleteCelebrity
+exports.deleteCelebrity = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.query;
+  if (!id) {
+    return next(new ErrorHandler("No Parameter Provided", 400));
+  }
+  const celebrity = await Celebrity.findById(id);
+
+  if (!celebrity) {
+    return next(new ErrorHandler("Celebrity not found", 404));
+  }
+  for (let i = 0; i < celebrity.images.length; i++) {
+    const result = await cloudinary.v2.uploader.destroy(
+      celebrity.images[i].public_id
+    );
+  }
+
+  await celebrity.remove();
+  await Product.deleteMany({
+    celebrity: id,
+  });
+  res.status(200).json({
+    success: true,
+    message: "Celebrity is deleted.",
+  });
+});
