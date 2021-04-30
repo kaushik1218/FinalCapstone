@@ -205,8 +205,9 @@ function App() {
           exact
         />
 
-        {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
+        {!loading && (!isAuthenticated || user.role === "admin") && (<Footer />)}
       </div>
+     
     </Router>
   );
 }
