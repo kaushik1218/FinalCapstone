@@ -6,7 +6,7 @@ const {
   getAllCelebrties,
   deleteCelebrity,
   singleCelebrity
-} = require("../controllers/celebrityController");
+} = require("../controllers/CelebrityController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
