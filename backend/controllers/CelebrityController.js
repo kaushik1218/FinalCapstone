@@ -96,7 +96,7 @@ exports.updateCelebrity = catchAsyncErrors(async (req, res, next) => {
     req.body.public_id = result.public_id;
     req.body.secure_url = result.secure_url;
   }
-  await celebiry.findByIdAndUpdate(id, req.body, {
+  await celebrity.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
     useFindAndModify: false,

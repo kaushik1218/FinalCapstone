@@ -5,7 +5,7 @@ const {
   createNewCelebrity,
   getAllCelebrties,
   deleteCelebrity,
-  singleCelebrity,
+  singleCelebrity
 } = require("../controllers/celebrityController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
