@@ -34,7 +34,7 @@ const CelebrityList = ({ history }) => {
         config
       );
 
-      alert.success("Celebrity created successfully");
+      alert.success("Celebrity Deleted successfully");
       getAdminCelebrities();
     } catch (error) {
       alert.error("Server Error");
