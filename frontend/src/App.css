@@ -73,9 +73,13 @@ nav {
 #products_heading{
   text-align: center;
 }
+
+#products{
+  max-width: 100%;
+  margin: 0 auto;
+}
 .card {
   height: 100%;
-  width: fit-content;
 }
 
 .card-title a {
@@ -102,7 +106,6 @@ nav {
 }
 
 .card-img-top {
-  width: 435px;
   height: 275px;
 }
 
@@ -160,7 +163,7 @@ footer {
   text-align: center;
 }
 .homepage-container{
-  max-width: 100%;
+  max-width: 90%;
   padding:0;
 }
 
